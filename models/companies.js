@@ -23,6 +23,7 @@ class Company {
   // make a company object to handle as an instance
   static create(companyData) {
     const company = new Company(companyData);
+
     return company;
   }
 
@@ -46,6 +47,7 @@ class Company {
   }
 
   // update a company
+  // --not working--
   async update(name, num_employees, description, logo_url) {
     // pass in our params, this = the company with it's req.params handle
     let companyData = {
@@ -79,6 +81,12 @@ class Company {
     } catch (error) {
       return new ExpressError(error);
     }
+  }
+
+  // delete an existing company
+  async remove() {
+    // since i'm already looking for a company using .find(), not need for try/catch
+    await db.query(`DELETE FROM companies WHERE handle = $1`, [this.handle]);
   }
 
   // create a new company

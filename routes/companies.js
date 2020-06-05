@@ -53,4 +53,19 @@ router.patch('/:handle', async function (req, res, next) {
   }
 });
 
+// delete an existing company
+router.delete('/:handle', async function (req, res, next) {
+  try {
+    // company not being deleted?
+    const { handle } = req.params;
+    console.log(handle);
+
+    const company = await Company.find(handle);
+    await company.remove();
+    return res.send({ message: 'Company removed' });
+  } catch (error) {
+    return next(error);
+  }
+});
+
 module.exports = router;
