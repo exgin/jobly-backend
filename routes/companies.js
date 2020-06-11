@@ -23,6 +23,13 @@ router.get('/:handle', async function (req, res, next) {
 });
 
 // create a new company
+// res.body must be:
+// {
+//   "company": {
+//     "name": "Pozing!",
+//     ..etc...
+//   }
+// }
 router.post('/', async function (req, res, next) {
   try {
     // make company

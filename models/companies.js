@@ -47,7 +47,6 @@ class Company {
   }
 
   // update a company
-  // --not working--
   async update(name, num_employees, description, logo_url) {
     // pass in our params, this = the company with it's req.params handle
     let companyData = {
@@ -58,11 +57,6 @@ class Company {
     };
 
     let data = sqlForPartialUpdate('companies', companyData, 'handle', this.handle);
-    // 'this.handle' is undefined, why?
-    console.log(this.handle);
-
-    // try to set handle to this data
-    // let bindHandle = bind(this.handle);
 
     // get out our values from data
     let { query, values } = data;
@@ -73,7 +67,6 @@ class Company {
       const company = result.rows[0];
 
       if (company === undefined) {
-        // but we get see our this.hanlde in error msg?
         const error = new ExpressError(`No company found with handle: ${this.handle}`);
         error.status = 404;
         throw error;
