@@ -36,14 +36,13 @@ router.post('/', async function (req, res, next) {
 });
 
 // update an exisiting company
-// --not working now--
 router.patch('/:handle', async function (req, res, next) {
   try {
     // find our company
     const { handle } = req.params;
     const company = await Company.find(handle);
-    // get values from body
-    let { name, num_employees, description, logo_url } = req.body;
+
+    let { name, num_employees, description, logo_url } = req.body.company;
     // update with those values
     await company.update(name, num_employees, description, logo_url);
 
@@ -57,6 +56,7 @@ router.patch('/:handle', async function (req, res, next) {
 router.delete('/:handle', async function (req, res, next) {
   try {
     // company not being deleted?
+    // -> fixed when added 'handle' in the find() Company model method
     const { handle } = req.params;
 
     const company = await Company.find(handle);

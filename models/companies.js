@@ -29,7 +29,7 @@ class Company {
 
   static async find(handle) {
     const result = await db.query(
-      `SELECT name, num_employees, description, logo_url
+      `SELECT handle, name, num_employees, description, logo_url
                                     FROM companies
                                     WHERE handle = $1`,
       [handle]
