@@ -51,10 +51,10 @@ class Company {
   async update(name, num_employees, description, logo_url) {
     // pass in our params, this = the company with it's req.params handle
     let companyData = {
-      name: this.name || name,
-      num_employees: this.num_employees || num_employees,
-      description: this.description || description,
-      logo_url: this.logo_url || logo_url,
+      name: name,
+      num_employees: num_employees,
+      description: description,
+      logo_url: logo_url,
     };
 
     let data = sqlForPartialUpdate('companies', companyData, 'handle', this.handle);

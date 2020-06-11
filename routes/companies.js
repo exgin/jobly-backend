@@ -58,7 +58,6 @@ router.delete('/:handle', async function (req, res, next) {
   try {
     // company not being deleted?
     const { handle } = req.params;
-    console.log(handle);
 
     const company = await Company.find(handle);
     await company.remove();
