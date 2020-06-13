@@ -15,7 +15,7 @@ router.get('/', async (req, res, next) => {
 // get a specific job
 router.get('/:id', async function (req, res, next) {
   try {
-    const job = await Job.find(req.params.handle);
+    const job = await Job.find(req.params.id);
     return res.json({ job });
   } catch (error) {
     return next(error);
