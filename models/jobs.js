@@ -39,6 +39,8 @@ class Job {
     }
 
     let PSQLquery = baseQuery + whereExpressions.join(' AND ');
+    console.log(PSQLquery);
+
     // pass in our query & it's values
     const result = await db.query(PSQLquery, queryValues);
 
@@ -53,6 +55,7 @@ class Job {
         WHERE id = $1`,
       [id]
     );
+    console.log(result);
 
     const job = result.rows[0];
 
@@ -72,6 +75,18 @@ class Job {
     job.company = companyResult.rows[0];
 
     return job;
+  }
+
+  // create a new job
+  static async create(data) {
+    const result = await db.query(
+      `INSERT INTO jobs (title, salary, equity, company_handle)
+                                  VALUES ($1, $2, $3, $4)
+                                  RETURNING id, title, salary, equity, company_handle`,
+      [data.title, data.salary, data.equity, data.company_handle]
+    );
+
+    return result.rows[0];
   }
 }
 
