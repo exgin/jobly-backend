@@ -39,7 +39,6 @@ class Job {
     }
 
     let PSQLquery = baseQuery + whereExpressions.join(' AND ');
-    console.log(PSQLquery);
 
     // pass in our query & it's values
     const result = await db.query(PSQLquery, queryValues);

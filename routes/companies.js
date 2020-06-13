@@ -1,6 +1,9 @@
 const Router = require('express').Router;
 const router = new Router();
 const Company = require('../models/companies');
+const { validate } = require('jsonschema');
+const companyNew = require('../schemas/companyNew.json');
+const companyUpdate = require('../schemas/companyUpdate.json');
 
 // return all companies in the db
 router.get('/', async function (req, res, next) {
@@ -32,6 +35,14 @@ router.get('/:handle', async function (req, res, next) {
 // }
 router.post('/', async function (req, res, next) {
   try {
+    const validation = validate(req.body, companyNew);
+
+    if (!validation.valid) {
+      throw new ExpressError(
+        validation.errors.map((e) => e.stack),
+        400
+      );
+    }
     // make company
     const company = await Company.create(req.body);
     // save & insert into db
@@ -45,6 +56,18 @@ router.post('/', async function (req, res, next) {
 // update an exisiting company
 router.patch('/:handle', async function (req, res, next) {
   try {
+    if ('handle' in req.body) {
+      throw new ExpressError(`You can't change a company's handle!`, 400);
+    }
+
+    const validation = validate(req.body, companyUpdate);
+    if (!validation.valid) {
+      throw new ExpressError(
+        validation.errors.map((e) => e.stack),
+        400
+      );
+    }
+
     // find our company
     const { handle } = req.params;
     const company = await Company.find(handle);

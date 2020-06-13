@@ -11,15 +11,25 @@ const TEST_DATA = {};
 async function beforeEachFn(TEST_DATA) {
   try {
     // create a query for our companies test db
-    const result = await db.query(
+    const companyResult = await db.query(
       `INSERT INTO companies (handle, name, num_employees)
                                  VALUES ($1, $2, $3) RETURNING *`,
       ['test', 'Test Company', 6999]
     );
     // set to our global object
-    TEST_DATA.currCompany = result.rows[0];
+    TEST_DATA.currCompany = companyResult.rows[0];
+
+    // create a query for our jobs test db
+    const jobsResult = await db.query(
+      `INSET INTO jobs (title, salary, equity, company_handle)
+                                     VALUES ($1, $2, $3, $4) RETURNING *`,
+      ['sde', 10.25, 0.5, TEST_DATA.currCompany.handle]
+    );
+
+    // set to our global object
+    TEST_DATA.job = jobsResult.rows[0];
   } catch (error) {
-    return console.log(error);
+    return console.error(error);
   }
 }
 
