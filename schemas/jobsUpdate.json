@@ -7,13 +7,12 @@
   "default": {},
   "examples": [
     {
-      "title": "Sweeping",
-      "salary": 7.26,
-      "equity": 0.01,
-      "company_handle": "abc"
+      "title": "Test",
+      "salary": 19.26,
+      "equity": 0.5
     }
   ],
-  "required": ["title", "salary", "equity", "company_handle"],
+  "required": [],
   "additionalProperties": false,
   "properties": {
     "title": {
@@ -22,7 +21,7 @@
       "title": "The title schema",
       "description": "An explanation about the purpose of this instance.",
       "default": "",
-      "examples": ["Sweeping"]
+      "examples": ["Test"]
     },
     "salary": {
       "$id": "#/properties/salary",
@@ -30,7 +29,7 @@
       "title": "The salary schema",
       "description": "An explanation about the purpose of this instance.",
       "default": 0.0,
-      "examples": [7.26]
+      "examples": [19.26]
     },
     "equity": {
       "$id": "#/properties/equity",
@@ -38,15 +37,7 @@
       "title": "The equity schema",
       "description": "An explanation about the purpose of this instance.",
       "default": 0.0,
-      "examples": [0.01]
-    },
-    "company_handle": {
-      "$id": "#/properties/company_handle",
-      "type": "string",
-      "title": "The company_handle schema",
-      "description": "An explanation about the purpose of this instance.",
-      "default": "",
-      "examples": ["abc"]
+      "examples": [0.5]
     }
   }
 }

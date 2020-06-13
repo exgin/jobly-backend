@@ -20,5 +20,9 @@
     "morgan": "^1.10.0",
     "pg": "^8.2.1",
     "supertest": "^4.0.2"
+  },
+  "devDependencies": {
+    "jest": "^23.6.0",
+    "supertest": "^3.1.0"
   }
 }

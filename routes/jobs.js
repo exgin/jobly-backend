@@ -3,7 +3,8 @@ const router = new Router();
 const Job = require('../models/jobs');
 const ExpressError = require('../helpers/ExpressError');
 const { validate } = require('jsonschema');
-const { jobsNew } = require('../schemas');
+const jobsNew = require('../schemas/jobsNew.json');
+const jobsUpdate = require('../schemas/jobsUpdate.json');
 
 // get all jobs
 router.get('/', async (req, res, next) => {
@@ -51,6 +52,16 @@ router.patch('/:id', async function (req, res, next) {
     // disallow user from changing our primary key
     if ('id' in req.body) {
       throw new ExpressError(`You can't change a job's ID!`, 400);
+    }
+
+    // validate our json
+    const validation = validate(req.body, jobsUpdate);
+    if (!validation.valid) {
+      // show our erros from the schema
+      throw new ExpressError(
+        validation.errors.map((el) => el.stack),
+        404
+      );
     }
 
     const updatedJob = await Job.update(req.params.id, req.body);
