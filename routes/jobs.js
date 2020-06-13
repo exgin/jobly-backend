@@ -11,4 +11,13 @@ router.get('/', async (req, res, next) => {
   }
 });
 
+router.get('/:id', async function (req, res, next) {
+  try {
+    const job = await Job.find(req.params.handle);
+    return res.json({ job });
+  } catch (error) {
+    return next(error);
+  }
+});
+
 module.exports = router;

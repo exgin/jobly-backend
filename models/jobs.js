@@ -44,6 +44,35 @@ class Job {
 
     return result.rows;
   }
+
+  // find a job based off it's id
+  static async find(id) {
+    const result = await db.query(
+      `SELECT id, title, salary, equity, date_posted, company_handle
+        FROM jobs
+        WHERE id = $1`,
+      [id]
+    );
+
+    const job = result.rows[0];
+
+    if (job === undefined) {
+      throw new ExpressError(`No job found with id: ${id}`, 404);
+    }
+
+    // find the company assocaited with its job aswell, using a company's handle
+    const companyResult = await db.query(
+      `SELECT name, num_employees, description
+                                          FROM companies
+                                          WHERE handle = $1`,
+      [job.company_handle]
+    );
+
+    // set a company property on job and give it companyResult's data
+    job.company = companyResult.rows[0];
+
+    return job;
+  }
 }
 
 module.exports = Job;
