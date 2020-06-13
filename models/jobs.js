@@ -88,6 +88,19 @@ class Job {
 
     return result.rows[0];
   }
+
+  // update a job
+  static async update(id, data) {
+    let { query, values } = sqlForPartialUpdate('jobs', data, 'id', id);
+    const result = await db.query(query, values);
+    const job = result.rows[0];
+
+    if (job === undefined) {
+      throw new ExpressError(`No job found with id: ${id}`, 404);
+    }
+
+    return job;
+  }
 }
 
 module.exports = Job;
