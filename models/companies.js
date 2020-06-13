@@ -3,12 +3,13 @@ const ExpressError = require('../helpers/ExpressError');
 const sqlForPartialUpdate = require('../helpers/partialUpdate');
 
 class Company {
-  constructor({ handle, name, num_employees, description, logo_url }) {
+  constructor({ handle, name, num_employees, description, logo_url, jobs }) {
     this.handle = handle;
     this.name = name;
     this.num_employees = num_employees;
     this.description = description;
     this.logo_url = logo_url;
+    this.jobs = jobs;
   }
 
   // find all companies
@@ -42,6 +43,16 @@ class Company {
       error.status = 404;
       throw error;
     }
+
+    const jobsResult = await db.query(
+      `SELECT id, title, salary, equity
+                                       FROM jobs
+                                       WHERE company_handle = $1`,
+      [handle]
+    );
+
+    // set a new property on company | apply EVERY job.
+    company.jobs = jobsResult.rows;
 
     return new Company(company);
   }
