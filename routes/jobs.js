@@ -2,6 +2,8 @@ const Router = require('express').Router;
 const router = new Router();
 const Job = require('../models/jobs');
 const ExpressError = require('../helpers/ExpressError');
+const { validate } = require('jsonschema');
+const { jobsNew } = require('../schemas');
 
 // get all jobs
 router.get('/', async (req, res, next) => {
@@ -26,6 +28,16 @@ router.get('/:id', async function (req, res, next) {
 // create a job
 router.post('/', async function (req, res, next) {
   try {
+    // validate our json
+    const validation = validate(req.body, jobsNew);
+    if (!validation.valid) {
+      // show our erros from the schema
+      throw new ExpressError(
+        validation.errors.map((el) => el.stack),
+        404
+      );
+    }
+
     const job = await Job.create(req.body);
     return res.status(201).json({ job });
   } catch (error) {
