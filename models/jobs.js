@@ -101,6 +101,17 @@ class Job {
 
     return job;
   }
+
+  // delete a job
+  static async remove(id) {
+    const result = await db.query(`DELETE FROM jobs WHERE id = $1 RETURNING id, title`, [id]);
+
+    let job = result.rows[0];
+
+    if (job === undefined) {
+      throw new ExpressError(`No job found with id: ${id}`, 404);
+    }
+  }
 }
 
 module.exports = Job;

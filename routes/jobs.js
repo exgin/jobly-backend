@@ -2,6 +2,7 @@ const Router = require('express').Router;
 const router = new Router();
 const Job = require('../models/jobs');
 const ExpressError = require('../helpers/ExpressError');
+
 // get all jobs
 router.get('/', async (req, res, next) => {
   try {
@@ -42,6 +43,16 @@ router.patch('/:id', async function (req, res, next) {
 
     const updatedJob = await Job.update(req.params.id, req.body);
     return res.json({ updatedJob });
+  } catch (error) {
+    return next(error);
+  }
+});
+
+// delete a job
+router.delete('/:id', async function (req, res, next) {
+  try {
+    await Job.remove(req.params.id);
+    return res.json({ message: 'Job successfully deleted' });
   } catch (error) {
     return next(error);
   }
