@@ -7,7 +7,7 @@ const jobsNew = require('../schemas/jobsNew.json');
 const jobsUpdate = require('../schemas/jobsUpdate.json');
 
 // get all jobs
-router.get('/', async (req, res, next) => {
+router.get('/', async function (req, res, next) {
   try {
     const jobs = await Job.findAll(req.query);
     return res.json({ jobs });

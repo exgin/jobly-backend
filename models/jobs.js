@@ -48,7 +48,6 @@ class Job {
 
   // find a job based off it's id
   static async find(id) {
-    console.log(id);
     const result = await db.query(
       `SELECT id, title, salary, equity, date_posted, company_handle
         FROM jobs
