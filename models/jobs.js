@@ -87,6 +87,20 @@ class Job {
     return result.rows[0];
   }
 
+  // apply to a job | must pass in job id & username & state that needs to be changed
+  static async apply(id, username, state) {
+    const job = await db.query(`SELECT id FROM jobs WHERE id = $1`, [id]);
+
+    if (job === undefined) {
+      throw new ExpressError(`This job you're applying to with id of, ${id}, doesn't exist`, 404);
+    }
+
+    // now add to the applications table
+    const appResult = await db.query(`INSERT INTO applications (username, job_id, state) VALUES ($1, $2, $3)`, [username, id, state]);
+
+    return appResult;
+  }
+
   // update a job
   static async update(id, data) {
     let { query, values } = sqlForPartialUpdate('jobs', data, 'id', id);

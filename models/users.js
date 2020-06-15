@@ -50,6 +50,16 @@ class User {
       throw new ExpressError(`${username} not found. Try a different username`, 404);
     }
 
+    const jobResult = await db.query(
+      `SELECT j.title, j.company_handle, a.state, a.created_at
+                                      FROM applications AS a
+                                      JOIN jobs as j ON j.id = a.job_id
+                                      WHERE username = $1`,
+      [username]
+    );
+
+    user.jobs = jobResult.rows;
+
     return user;
   }
 

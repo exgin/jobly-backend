@@ -23,4 +23,12 @@ CREATE TABLE users (
     email TEXT NOT NULL UNIQUE,
     photo_url TEXT NOT NULL,
     is_admin BOOLEAN NOT NULL DEFAULT FALSE
-)
+);
+
+CREATE TABLE applications (
+    PRIMARY KEY(username, job_id),
+    username TEXT NOT NULL REFERENCES users ON DELETE CASCADE,
+    job_id INTEGER NOT NULL REFERENCES jobs ON DELETE CASCADE,
+    state TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT current_timestamp
+);

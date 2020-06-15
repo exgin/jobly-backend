@@ -47,6 +47,19 @@ router.post('/', checkAdmin, async function (req, res, next) {
   }
 });
 
+// create a specific job application, must have an auth to do this
+router.post('/:id/apply', authRequired, async function (req, res, next) {
+  try {
+    // select the state from the json body
+    const state = req.body.state || 'applied';
+    // apply the id | to the specific username | of the currenty state
+    await Job.apply(req.params.id, req.user.username, state);
+    return res.json({ message: state });
+  } catch (error) {
+    return next(error);
+  }
+});
+
 // update a job
 router.patch('/:id', checkAdmin, async function (req, res, next) {
   try {
