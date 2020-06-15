@@ -5,9 +5,10 @@ const ExpressError = require('../helpers/ExpressError');
 const { validate } = require('jsonschema');
 const jobsNew = require('../schemas/jobsNew.json');
 const jobsUpdate = require('../schemas/jobsUpdate.json');
+const { authRequired, checkAdmin } = require('../middleware/middleAuth');
 
 // get all jobs
-router.get('/', async function (req, res, next) {
+router.get('/', authRequired, async function (req, res, next) {
   try {
     const jobs = await Job.findAll(req.query);
     return res.json({ jobs });
