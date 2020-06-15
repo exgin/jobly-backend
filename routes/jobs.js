@@ -32,7 +32,7 @@ router.post('/', async function (req, res, next) {
     // validate our json
     const validation = validate(req.body, jobsNew);
     if (!validation.valid) {
-      // show our erros from the schema
+      // show our errors from the schema
       throw new ExpressError(
         validation.errors.map((el) => el.stack),
         404
@@ -57,7 +57,7 @@ router.patch('/:id', async function (req, res, next) {
     // validate our json
     const validation = validate(req.body, jobsUpdate);
     if (!validation.valid) {
-      // show our erros from the schema
+      // show our errors from the schema
       throw new ExpressError(
         validation.errors.map((el) => el.stack),
         404

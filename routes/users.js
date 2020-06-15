@@ -2,6 +2,7 @@ const Router = require('express').Router;
 const router = new Router();
 const User = require('../models/users');
 const { validate } = require('jsonschema');
+const userNew = require('../schemas/usersNew.json');
 const createToken = require('../helpers/createToken');
 const ExpressError = require('../helpers/ExpressError');
 
@@ -45,7 +46,14 @@ router.patch('/:username', async function (req, res, next) {
       throw new ExpressError(`You can't change your username!`, 400);
     }
 
-    // add schema validation
+    const validation = validate(req.body, userNew);
+    if (!validation.valid) {
+      // show our errors from the schema
+      throw new ExpressError(
+        validation.errors.map((el) => el.stack),
+        404
+      );
+    }
 
     const user = await User.update(req.params.username, req.body);
     return res.json({ user });
