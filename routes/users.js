@@ -29,19 +29,6 @@ router.get('/:username', async function (req, res, next) {
 // create a user
 router.post('/', async function (req, res, next) {
   try {
-    // add schema validation
-
-    const user = await User.create(req.body);
-    const token = createToken(user);
-    return res.status(201).json({ token });
-  } catch (error) {
-    return next(error);
-  }
-});
-
-// update a user's info, even their password
-router.patch('/:username', async function (req, res, next) {
-  try {
     if ('username' in req.body) {
       throw new ExpressError(`You can't change your username!`, 400);
     }
@@ -54,6 +41,19 @@ router.patch('/:username', async function (req, res, next) {
         404
       );
     }
+
+    const user = await User.create(req.body);
+    const token = createToken(user);
+    return res.status(201).json({ token });
+  } catch (error) {
+    return next(error);
+  }
+});
+
+// update a user's info, even their password
+router.patch('/:username', async function (req, res, next) {
+  try {
+    // add schema validation
 
     const user = await User.update(req.params.username, req.body);
     return res.json({ user });
