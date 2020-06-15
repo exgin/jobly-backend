@@ -28,6 +28,13 @@
       "default": "",
       "format": "uri",
       "examples": ["https://ih1.redbubble.net/image.396326354.4958/flat,800x800,075,t.u1.jpg"]
+    },
+    "_token": {
+      "$id": "/properties/token",
+      "type": "string",
+      "title": "The Token Schema ",
+      "default": "",
+      "examples": ["AAA123AAAA"]
     }
   },
   "required": ["name", "handle"]
