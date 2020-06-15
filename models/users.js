@@ -6,6 +6,28 @@ const bcrypt = require('bcrypt');
 const BCRYPT_WORK_FACTOR = 10;
 
 class User {
+  // authenticate a user for logging in
+  static async authenticate(data) {
+    const result = await db.query(
+      `SELECT username, password, first_name, last_name, email, photo_url, is_admin
+                                   FROM users
+                                   WHERE username = $1`,
+      [data.username]
+    );
+
+    const user = result.rows[0];
+
+    // make sure the password is correct
+    if (user) {
+      const isValidPassword = await bcrypt.compare(data.password, user.password);
+      if (isValidPassword) {
+        return user;
+      } else {
+        throw new ExpressError(`Invalid username/password. Try again.`, 401);
+      }
+    }
+  }
+
   // show all users
   static async findAll() {
     const result = await db.query(`SELECT username, first_name, last_name, email, photo_url, is_admin
