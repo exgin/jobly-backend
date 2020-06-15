@@ -5,6 +5,7 @@ const { validate } = require('jsonschema');
 const userNew = require('../schemas/usersNew.json');
 const createToken = require('../helpers/createToken');
 const ExpressError = require('../helpers/ExpressError');
+const { ensureCorrectUser } = require('../middleware/middleAuth');
 
 // show all users
 router.get('/', async function (req, res, next) {
@@ -52,7 +53,7 @@ router.post('/', async function (req, res, next) {
 });
 
 // update a user's info, even their password
-router.patch('/:username', async function (req, res, next) {
+router.patch('/:username', ensureCorrectUser, async function (req, res, next) {
   try {
     // add schema validation
 
@@ -64,7 +65,7 @@ router.patch('/:username', async function (req, res, next) {
 });
 
 // delete a user
-router.delete('/:username', async function (req, res, next) {
+router.delete('/:username', ensureCorrectUser, async function (req, res, next) {
   try {
     await User.remove(req.params.username);
     return res.json({ msg: 'User deleted!' });

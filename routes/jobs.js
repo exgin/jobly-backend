@@ -18,7 +18,7 @@ router.get('/', authRequired, async function (req, res, next) {
 });
 
 // get a specific job
-router.get('/:id', async function (req, res, next) {
+router.get('/:id', authRequired, async function (req, res, next) {
   try {
     const job = await Job.find(req.params.id);
     return res.json({ job });
@@ -28,7 +28,7 @@ router.get('/:id', async function (req, res, next) {
 });
 
 // create a job
-router.post('/', async function (req, res, next) {
+router.post('/', checkAdmin, async function (req, res, next) {
   try {
     // validate our json
     const validation = validate(req.body, jobsNew);
@@ -48,7 +48,7 @@ router.post('/', async function (req, res, next) {
 });
 
 // update a job
-router.patch('/:id', async function (req, res, next) {
+router.patch('/:id', checkAdmin, async function (req, res, next) {
   try {
     // disallow user from changing our primary key
     if ('id' in req.body) {
@@ -73,7 +73,7 @@ router.patch('/:id', async function (req, res, next) {
 });
 
 // delete a job
-router.delete('/:id', async function (req, res, next) {
+router.delete('/:id', checkAdmin, async function (req, res, next) {
   try {
     await Job.remove(req.params.id);
     return res.json({ message: 'Job successfully deleted' });

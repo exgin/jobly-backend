@@ -4,9 +4,10 @@ const Company = require('../models/companies');
 const { validate } = require('jsonschema');
 const companyNew = require('../schemas/companyNew.json');
 const companyUpdate = require('../schemas/companyUpdate.json');
+const { authRequired, checkAdmin } = require('../middleware/middleAuth');
 
 // return all companies in the db
-router.get('/', async function (req, res, next) {
+router.get('/', authRequired, async function (req, res, next) {
   try {
     const companies = await Company.findAll();
     return res.json({ companies });
@@ -16,7 +17,7 @@ router.get('/', async function (req, res, next) {
 });
 
 // find a specific company
-router.get('/:handle', async function (req, res, next) {
+router.get('/:handle', authRequired, async function (req, res, next) {
   try {
     const company = await Company.find(req.params.handle);
     return res.json({ company });
@@ -33,7 +34,7 @@ router.get('/:handle', async function (req, res, next) {
 //     ..etc...
 //   }
 // }
-router.post('/', async function (req, res, next) {
+router.post('/', checkAdmin, async function (req, res, next) {
   try {
     const validation = validate(req.body, companyNew);
 
@@ -54,7 +55,7 @@ router.post('/', async function (req, res, next) {
 });
 
 // update an exisiting company
-router.patch('/:handle', async function (req, res, next) {
+router.patch('/:handle', checkAdmin, async function (req, res, next) {
   try {
     if ('handle' in req.body) {
       throw new ExpressError(`You can't change a company's handle!`, 400);
@@ -83,7 +84,7 @@ router.patch('/:handle', async function (req, res, next) {
 });
 
 // delete an existing company
-router.delete('/:handle', async function (req, res, next) {
+router.delete('/:handle', checkAdmin, async function (req, res, next) {
   try {
     // company not being deleted?
     // -> fixed when added 'handle' in the find() Company model method
