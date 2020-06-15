@@ -66,10 +66,18 @@ class User {
       throw new ExpressError(`Can not update unknown user: ${username}`, 404);
     }
 
-    // delete user.password;
-    // delete user.is_admin;
-
     return user;
+  }
+
+  // delete a user
+  static async remove(username) {
+    const result = await db.query(`DELETE FROM users WHERE username = $1`, [username]);
+
+    const user = result.rows[0];
+
+    if (user === undefined) {
+      throw new ExpressError(`Can not delete unknown user ${username}`, 404);
+    }
   }
 }
 
