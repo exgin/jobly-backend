@@ -30,10 +30,6 @@ router.get('/:username', async function (req, res, next) {
 // create a user
 router.post('/', async function (req, res, next) {
   try {
-    if ('username' in req.body) {
-      throw new ExpressError(`You can't change your username!`, 400);
-    }
-
     const validation = validate(req.body, userNew);
     if (!validation.valid) {
       // show our errors from the schema
@@ -55,6 +51,9 @@ router.post('/', async function (req, res, next) {
 // update a user's info, even their password
 router.patch('/:username', ensureCorrectUser, async function (req, res, next) {
   try {
+    if ('username' in req.body) {
+      throw new ExpressError(`You can't change your username!`, 400);
+    }
     // add schema validation
 
     const user = await User.update(req.params.username, req.body);

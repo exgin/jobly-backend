@@ -1,0 +1,6 @@
+- the best solutions are generally the simplest
+- add tests that don't work!
+- testing is the best way to learn & improve
+- send an insomia & postman file (a file with JSON) to have others test & use my backend code
+- instead of Truncating, DELETE, since DELETE will remove the foregin key restraints
+- add more comments on a route to see how it works
