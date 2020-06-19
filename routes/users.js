@@ -42,7 +42,7 @@ router.post('/', async function (req, res, next) {
     const user = await User.create(req.body);
     // create & return a jwt, so it the user its technically 'logged in' already after creating an account
     const token = createToken(user);
-    return res.status(201).json({ token });
+    return res.status(201).json({ token, user });
   } catch (error) {
     return next(error);
   }
